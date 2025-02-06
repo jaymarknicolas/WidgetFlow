@@ -132,9 +132,16 @@ This schema allows:
 
 ---
 
+## **💡 Sample Design**
+<img width="1908" alt="image" src="https://github.com/user-attachments/assets/09574699-303f-49d7-a089-271dff5da99f" />
+
 ## **💡 Next Steps**
 - **Initialize GitHub Repo & Setup Next.js Project**  
 - **Install Dependencies** (`next`, `tailwindcss`, `prisma`, `zustand`, `next-auth`)  
 - **Build Authentication Flow**  
 
 Would you like me to generate the **initial Next.js project structure** for you? 🚀
+
+
+
+
