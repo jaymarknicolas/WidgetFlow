@@ -1,5 +1,3 @@
-Here’s a **complete** project plan, including the **GitHub repository structure**, **Prisma schema**, and other essential details to get started.  
-
 ---
 
 # **📌 WidgetFlow: A Draggable Productivity Dashboard**  
