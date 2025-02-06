@@ -1,4 +1,3 @@
----
 
 # **📌 WidgetFlow: A Draggable Productivity Dashboard**  
 *A customizable SPA where users can drag-and-drop widgets like a To-Do app, Pomodoro timer, and embeddable web pages, with authentication and data persistence.*  
