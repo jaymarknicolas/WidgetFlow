@@ -53,7 +53,11 @@ const DropZone = () => {
       {/* Layout Selection */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-bold">Drop Items Here</h2>
-        <Select onValueChange={(value) => setLayout(value as any)}>
+        <Select
+          onValueChange={(value: "grid" | "list" | "masonry") =>
+            setLayout(value)
+          }
+        >
           <SelectTrigger className="w-40">
             <SelectValue placeholder="Select Layout" />
           </SelectTrigger>
@@ -115,7 +119,8 @@ const isValidUrl = (url: string) => {
   try {
     new URL(url);
     return true;
-  } catch (_) {
+  } catch (error) {
+    // You can handle the error here if you want
     return false;
   }
 };
