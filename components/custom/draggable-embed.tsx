@@ -13,7 +13,7 @@ export function DraggableEmbed() {
 
   return (
     <div
-      //   @ts-ignore
+      //   @ts-expect-error "ref" is not a valid prop
       ref={drag}
       className={`p-2 border rounded cursor-grab ${
         isDragging ? "opacity-50" : "opacity-100"

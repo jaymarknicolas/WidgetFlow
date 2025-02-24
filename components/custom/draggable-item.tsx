@@ -13,7 +13,7 @@ const DraggableItem = () => {
   }));
 
   return (
-    //   @ts-ignore
+    //   @ts-expect-error "ref" is not a valid prop
     <div ref={drag} className="cursor-grab">
       <Card
         className={`shadow-md p-3 transition ${

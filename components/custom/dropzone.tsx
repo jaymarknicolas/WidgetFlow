@@ -67,7 +67,7 @@ const DropZone = () => {
 
       {/* Drop Zone */}
       <div
-        //   @ts-ignore
+        //   @ts-expect-error "ref" is not a valid prop
         ref={drop}
         className={`transition-all border-2 p-6 ${
           isOver ? "bg-blue-100 border-blue-500" : "bg-gray-50 border-gray-300"
