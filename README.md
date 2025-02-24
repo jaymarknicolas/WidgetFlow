@@ -1,46 +1,54 @@
+# **📌 WidgetFlow: A Draggable Productivity Dashboard**
 
-# **📌 WidgetFlow: A Draggable Productivity Dashboard**  
-*A customizable SPA where users can drag-and-drop widgets like a To-Do app, Pomodoro timer, and embeddable web pages, with authentication and data persistence.*  
+_A customizable SPA where users can drag-and-drop widgets like a To-Do app, Pomodoro timer, and embeddable web pages, with authentication and data persistence._
 
-## **📖 Project Overview**  
-WidgetFlow allows users to create a **customized dashboard** by selecting, resizing, and dragging widgets from a **sidebar** to the main page. The application includes **user authentication**, enabling users to save their dashboard layout and settings across devices.  
+## **📖 Project Overview**
 
-## **🛠 Features**  
+WidgetFlow allows users to create a **customized dashboard** by selecting, resizing, and dragging widgets from a **sidebar** to the main page. The application includes **user authentication**, enabling users to save their dashboard layout and settings across devices.
 
-### **Core Features**  
+## **🛠 Features**
+
+### **Core Features**
+
 ✅ **Draggable & Resizable Widgets** – Users can freely arrange widgets.  
 ✅ **User Authentication** – Login/Signup using **NextAuth.js**.  
 ✅ **Persistent Layout** – Save widget positions & settings to a database.  
-✅ **Dark Mode Support** – Toggle between light & dark themes.  
+✅ **Dark Mode Support** – Toggle between light & dark themes.
 
-### **Widgets**  
+### **Widgets**
+
 📝 **To-Do List** – Add, edit, delete tasks.  
 ⏳ **Pomodoro Timer** – Configurable work/break cycles.  
 🌐 **Embeddable Web Pages** – Load YouTube & other URLs in a resizable frame.  
-📅 *(Future Widgets: Calendar, Notes, Weather, Clock, etc.)*  
+📅 _(Future Widgets: Calendar, Notes, Weather, Clock, etc.)_
 
 ---
 
-## **⚙ Tech Stack**  
-### **Frontend**  
-- **Framework:** Next.js (React-based)  
-- **Styling:** Tailwind CSS + Framer Motion  
-- **State Management:** Zustand (lightweight alternative to Redux)  
-- **Drag-and-Drop Library:** React DnD or React-Grid-Layout  
+## **⚙ Tech Stack**
 
-### **Backend & Database**  
-- **Authentication:** NextAuth.js (JWT, Credentials, OAuth)  
-- **Database:** PostgreSQL with Prisma ORM  
-- **Storage:** Prisma-based persistence for widgets and user settings  
-- **API:** Next.js API routes  
+### **Frontend**
 
-### **Deployment & Hosting**  
-- **Frontend & Backend:** Vercel (Next.js optimized)  
-- **Database:** Supabase or a self-hosted PostgreSQL instance  
+- **Framework:** Next.js (React-based)
+- **Styling:** Tailwind CSS + Framer Motion
+- **State Management:** Zustand (lightweight alternative to Redux)
+- **Drag-and-Drop Library:** React DnD or React-Grid-Layout
+
+### **Backend & Database**
+
+- **Authentication:** NextAuth.js (JWT, Credentials, OAuth)
+- **Database:** PostgreSQL with Prisma ORM
+- **Storage:** Prisma-based persistence for widgets and user settings
+- **API:** Next.js API routes
+
+### **Deployment & Hosting**
+
+- **Frontend & Backend:** Vercel (Next.js optimized)
+- **Database:** Supabase or a self-hosted PostgreSQL instance
 
 ---
 
-## **📂 Folder & GitHub Repository Structure**  
+## **📂 Folder & GitHub Repository Structure**
+
 ```
 widgetflow/
 │── public/          # Static assets (favicons, images)
@@ -64,7 +72,7 @@ widgetflow/
 
 ---
 
-## **🗄 Prisma Schema (Database Model)**  
+## **🗄 Prisma Schema (Database Model)**
 
 ```prisma
 // prisma/schema.prisma
@@ -95,53 +103,57 @@ model Widget {
   createdAt DateTime @default(now())
 }
 ```
+
 This schema allows:  
 ✅ Users to **log in & save widgets**  
-✅ Widgets to be stored with **custom settings & positions**  
+✅ Widgets to be stored with **custom settings & positions**
 
 ---
 
-## **🚀 Development Timeline & Tasks**  
+## **🚀 Development Timeline & Tasks**
 
 ### **🟢 Phase 1: Planning & Setup (1 Week)**
-- Define UI/UX wireframes  
-- Set up Next.js, Tailwind, Prisma  
-- Configure **NextAuth.js** for authentication  
-- Create PostgreSQL database  
+
+- Define UI/UX wireframes
+- Set up Next.js, Tailwind, Prisma
+- Configure **NextAuth.js** for authentication
+- Create PostgreSQL database
 
 ### **🟢 Phase 2: Core Features (2 Weeks)**
-- Implement **drag-and-drop** functionality  
-- Set up Prisma for **storing widgets & positions**  
-- Design **To-Do List & Pomodoro Timer**  
+
+- Implement **drag-and-drop** functionality
+- Set up Prisma for **storing widgets & positions**
+- Design **To-Do List & Pomodoro Timer**
 
 ### **🟢 Phase 3: Advanced Features (2 Weeks)**
-- Add **Embeddable Web Pages** widget  
-- Implement **Dark Mode**  
-- Store widget settings in **database**  
+
+- Add **Embeddable Web Pages** widget
+- Implement **Dark Mode**
+- Store widget settings in **database**
 
 ### **🟢 Phase 4: API, Testing & Optimization (2 Weeks)**
-- Secure API routes with authentication  
-- Optimize **performance & responsiveness**  
-- Test on **mobile & desktop**  
+
+- Secure API routes with authentication
+- Optimize **performance & responsiveness**
+- Test on **mobile & desktop**
 
 ### **🟢 Phase 5: Deployment & Feedback (1 Week)**
-- Deploy on **Vercel**  
-- Collect user feedback & iterate  
 
-### **🛠 Estimated Total Time: 7-9 Weeks**  
+- Deploy on **Vercel**
+- Collect user feedback & iterate
+
+### **🛠 Estimated Total Time: 7-9 Weeks**
 
 ---
 
 ## **💡 Sample Design**
+
 <img width="1908" alt="image" src="https://github.com/user-attachments/assets/09574699-303f-49d7-a089-271dff5da99f" />
 
 ## **💡 Next Steps**
-- **Initialize GitHub Repo & Setup Next.js Project**  
-- **Install Dependencies** (`next`, `tailwindcss`, `prisma`, `zustand`, `next-auth`)  
-- **Build Authentication Flow**  
+
+- **Initialize GitHub Repo & Setup Next.js Project**
+- **Install Dependencies** (`next`, `tailwindcss`, `prisma`, `zustand`, `next-auth`)
+- **Build Authentication Flow**
 
 Would you like me to generate the **initial Next.js project structure** for you? 🚀
-
-
-
-
