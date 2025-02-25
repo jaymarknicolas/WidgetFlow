@@ -1,6 +1,7 @@
 "use client";
 
 import { useDrag } from "react-dnd";
+import { Card, CardContent } from "@/components/ui/card";
 
 export function DraggableEmbed() {
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -12,14 +13,17 @@ export function DraggableEmbed() {
   }));
 
   return (
-    <div
-      //   @ts-expect-error "ref" is not a valid prop
-      ref={drag}
-      className={`p-2 border rounded cursor-grab ${
-        isDragging ? "opacity-50" : "opacity-100"
-      }`}
-    >
-      🌐 Embed Link
+    // @ts-expect-error "ref" is a valid prop
+    <div ref={drag} className="cursor-grab">
+      <Card
+        className={`shadow-md p-3 transition ${
+          isDragging ? "opacity-50 scale-95" : "opacity-100"
+        }`}
+      >
+        <CardContent className="text-center p-0">
+          🌐 Drag this embedded link
+        </CardContent>
+      </Card>
     </div>
   );
 }
