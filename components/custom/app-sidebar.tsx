@@ -20,7 +20,7 @@ export function AppSidebar() {
           <SidebarGroupLabel>WidgetFlow</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem className="space-y-4">
+              <SidebarMenuItem className="flex items-center justify-start gap-4">
                 <SidebarMenuButton asChild>
                   <DraggableItem />
                 </SidebarMenuButton>

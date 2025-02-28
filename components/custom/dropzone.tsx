@@ -71,16 +71,14 @@ const DropZone = () => {
   };
 
   return (
-    <div className="w-full h-auto p-0">
+    <div className="w-full h-auto p-0  0">
       <div
         // @ts-expect-error "ref" is a valid prop
         ref={drop as React.RefObject<HTMLDivElement>}
-        className={`relative transition-all p-6 min-h-screen ${
+        className={`relative transition-all p-6 min-h-screen dropzone ${
           isOver ? "bg-blue-100 border-blue-500" : "bg-gray-50 border-gray-300"
         }`}
       >
-        <h2 className="text-lg font-bold mb-4">📌 Drag & Drop Notepad</h2>
-
         {items.map((item, index) => (
           <Rnd
             key={item.id}
@@ -179,10 +177,23 @@ const isValidUrl = (url: string) => {
   }
 };
 
+// Formats a given URL (adds protocol if missing, and converts YouTube links)
 const formatUrl = (url: string) => {
   if (!url.startsWith("http")) {
-    return `https://${url}`;
+    url = `https://${url}`;
   }
+
+  const videoMatch = url.match(
+    /(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+  );
+  const playlistMatch = url.match(/[?&]list=([a-zA-Z0-9_-]+)/);
+
+  if (playlistMatch) {
+    return `https://www.youtube.com/embed/videoseries?list=${playlistMatch[1]}`;
+  } else if (videoMatch) {
+    return `https://www.youtube.com/embed/${videoMatch[1]}`;
+  }
+
   return url;
 };
 
