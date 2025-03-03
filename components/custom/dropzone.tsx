@@ -5,10 +5,11 @@ import { useState } from "react";
 import { Rnd } from "react-rnd";
 import { Card, CardContent } from "@/components/ui/card";
 import { X } from "lucide-react";
+import { formatUrl } from "@/lib/utils";
 
 interface DroppedItem {
   id: string;
-  type: "TEXT" | "EMBED" | "NOTEPAD";
+  type: string;
   content: string;
   x: number;
   y: number;
@@ -16,62 +17,91 @@ interface DroppedItem {
   height: number;
 }
 
-const DropZone = () => {
+interface WidgetConfig {
+  id: string;
+  type: string;
+  initialContent: string;
+  placeholder?: string;
+  style?: React.CSSProperties;
+  component: React.ComponentType<{
+    content: string;
+    onChange: (content: string) => void;
+    placeholder?: string;
+  }>;
+}
+
+interface DropZoneProps {
+  widgetConfigs: WidgetConfig[];
+  onItemsChange?: (items: DroppedItem[]) => void;
+}
+
+const DropZone = ({ widgetConfigs, onItemsChange }: DropZoneProps) => {
   const [items, setItems] = useState<DroppedItem[]>([]);
 
   const [{ isOver }, drop] = useDrop({
-    accept: ["TEXT", "EMBED", "NOTEPAD"],
+    accept: widgetConfigs.map((config) => config.type),
     drop: (item: { id: string }) => {
-      console.log("Dropped item:", item);
+      const widgetConfig = widgetConfigs.find((config) => {
+        return config.id === item.id;
+      });
 
+      console.log("widgetConfig");
+      console.log(widgetConfig);
+      console.log("widgetConfig");
+      if (!widgetConfig) return;
+
+      if (widgetConfig.type === "EMBED") {
+        widgetConfig.initialContent = formatUrl(
+          prompt("Enter a URL to embed:") || ""
+        );
+      }
       const newItem: DroppedItem = {
         id: crypto.randomUUID(),
-        type:
-          item.id === "text-widget"
-            ? "TEXT"
-            : item.id === "notepad-widget"
-            ? "NOTEPAD"
-            : "EMBED",
-        content:
-          item.id === "text-widget"
-            ? "📝 New Note"
-            : item.id === "notepad-widget"
-            ? "🗒️ New Notepad"
-            : formatUrl(prompt("Enter a URL to embed:") || ""),
+        type: widgetConfig.type,
+        content: widgetConfig.initialContent,
         x: 50 + items.length * 20,
         y: 50 + items.length * 20,
         width: 250,
         height: 150,
       };
 
+      console.log(newItem);
       if (newItem.type === "EMBED" && !isValidUrl(newItem.content)) {
         alert("Invalid URL. Please enter a valid link.");
         return;
       }
 
-      setItems((prev) => [...prev, newItem]);
+      setItems((prev) => {
+        const newItems = [...prev, newItem];
+        onItemsChange?.(newItems);
+        return newItems;
+      });
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
     }),
   });
 
-  // Removes an item by ID
   const removeItem = (id: string) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
+    setItems((prev) => {
+      const newItems = prev.filter((item) => item.id !== id);
+      onItemsChange?.(newItems);
+      return newItems;
+    });
   };
 
-  // Updates the content of a note or notepad
   const updateContent = (id: string, newContent: string) => {
-    setItems((prev) =>
-      prev.map((item) =>
+    setItems((prev) => {
+      const newItems = prev.map((item) =>
         item.id === id ? { ...item, content: newContent } : item
-      )
-    );
+      );
+      onItemsChange?.(newItems);
+      return newItems;
+    });
   };
 
   return (
-    <div className="w-full h-auto p-0  0">
+    <div className="w-full h-auto p-0">
       <div
         // @ts-expect-error "ref" is a valid prop
         ref={drop as React.RefObject<HTMLDivElement>}
@@ -79,52 +109,67 @@ const DropZone = () => {
           isOver ? "bg-blue-100 border-blue-500" : "bg-gray-50 border-gray-300"
         }`}
       >
-        {items.map((item, index) => (
-          <Rnd
-            key={item.id}
-            default={{
-              x: item.x,
-              y: item.y,
-              width: item.width,
-              height: item.height,
-            }}
-            bounds="parent"
-            enableResizing={{
-              top: true,
-              right: true,
-              bottom: true,
-              left: true,
-              topRight: true,
-              bottomRight: true,
-              bottomLeft: true,
-              topLeft: true,
-            }}
-            dragHandleClassName="drag-handle"
-            onDragStop={(e, d) => {
-              setItems((prev) =>
-                prev.map((i, idx) =>
-                  idx === index ? { ...i, x: d.x, y: d.y } : i
-                )
-              );
-            }}
-            onResizeStop={(e, direction, ref, delta, position) => {
-              setItems((prev) =>
-                prev.map((i, idx) =>
-                  idx === index
-                    ? {
-                        ...i,
-                        width: parseFloat(ref.style.width),
-                        height: parseFloat(ref.style.height),
-                        x: position.x,
-                        y: position.y,
-                      }
-                    : i
-                )
-              );
-            }}
-          >
-            {item.type === "TEXT" || item.type === "NOTEPAD" ? (
-              <Card className="shadow-lg border cursor-move drag-handle w-full h-full flex items-center justify-center relative bg-orange-100">
+        {items.map((item, index) => {
+          const widgetConfig = widgetConfigs.find(
+            (config) => config.type === item.type
+          );
+
+          if (!widgetConfig) return null;
+
+          const WidgetComponent = widgetConfig.component;
+
+          return (
+            <Rnd
+              key={item.id}
+              default={{
+                x: item.x,
+                y: item.y,
+                width: item.width,
+                height: item.height,
+              }}
+              bounds="parent"
+              enableResizing={{
+                top: true,
+                right: true,
+                bottom: true,
+                left: true,
+                topRight: true,
+                bottomRight: true,
+                bottomLeft: true,
+                topLeft: true,
+              }}
+              dragHandleClassName="drag-handle"
+              onDragStop={(e, d) => {
+                setItems((prev) => {
+                  const newItems = prev.map((i, idx) =>
+                    idx === index ? { ...i, x: d.x, y: d.y } : i
+                  );
+                  onItemsChange?.(newItems);
+                  return newItems;
+                });
+              }}
+              onResizeStop={(e, direction, ref, delta, position) => {
+                setItems((prev) => {
+                  const newItems = prev.map((i, idx) =>
+                    idx === index
+                      ? {
+                          ...i,
+                          width: parseFloat(ref.style.width),
+                          height: parseFloat(ref.style.height),
+                          x: position.x,
+                          y: position.y,
+                        }
+                      : i
+                  );
+                  onItemsChange?.(newItems);
+                  return newItems;
+                });
+              }}
+            >
+              <Card
+                className="shadow-lg border cursor-move drag-handle w-full h-full flex items-center justify-center relative"
+                style={widgetConfig.style}
+              >
                 <button
                   className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
                   onClick={() => removeItem(item.id)}
@@ -133,36 +178,18 @@ const DropZone = () => {
                 </button>
 
                 <CardContent className="w-full h-full flex items-center justify-center p-4 border-none">
-                  <textarea
-                    className="w-full h-full p-2  rounded-md resize-none focus-visible:border-none outline-none bg-orange-50"
-                    value={item.content}
-                    onChange={(e) => updateContent(item.id, e.target.value)}
-                    placeholder={
-                      item.type === "TEXT" ? "Write something..." : "Notepad..."
+                  <WidgetComponent
+                    content={item.content}
+                    onChange={(newContent) =>
+                      updateContent(item.id, newContent)
                     }
+                    placeholder={widgetConfig.placeholder}
                   />
                 </CardContent>
               </Card>
-            ) : (
-              <Card className="shadow-lg bg-white border cursor-move drag-handle w-full h-full flex items-center justify-center relative">
-                <button
-                  className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
-                  onClick={() => removeItem(item.id)}
-                >
-                  <X size={16} />
-                </button>
-
-                <CardContent className="w-full h-full flex items-center justify-center p-4">
-                  <iframe
-                    src={item.content}
-                    className="w-full h-full border"
-                    title={`Embed ${item.id}`}
-                  />
-                </CardContent>
-              </Card>
-            )}
-          </Rnd>
-        ))}
+            </Rnd>
+          );
+        })}
       </div>
     </div>
   );
@@ -175,26 +202,6 @@ const isValidUrl = (url: string) => {
   } catch {
     return false;
   }
-};
-
-// Formats a given URL (adds protocol if missing, and converts YouTube links)
-const formatUrl = (url: string) => {
-  if (!url.startsWith("http")) {
-    url = `https://${url}`;
-  }
-
-  const videoMatch = url.match(
-    /(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
-  );
-  const playlistMatch = url.match(/[?&]list=([a-zA-Z0-9_-]+)/);
-
-  if (playlistMatch) {
-    return `https://www.youtube.com/embed/videoseries?list=${playlistMatch[1]}`;
-  } else if (videoMatch) {
-    return `https://www.youtube.com/embed/${videoMatch[1]}`;
-  }
-
-  return url;
 };
 
 export default DropZone;
