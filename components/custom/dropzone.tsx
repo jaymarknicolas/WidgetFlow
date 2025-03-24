@@ -105,7 +105,7 @@ const DropZone = ({ widgetConfigs, onItemsChange }: DropZoneProps) => {
       <div
         // @ts-expect-error "ref" is a valid prop
         ref={drop as React.RefObject<HTMLDivElement>}
-        className={`relative transition-all p-6 min-h-screen dropzone ${
+        className={`relative transition-all p-6 min-h-screen dropzone grid-layout ${
           isOver ? "bg-blue-100 border-blue-500" : "bg-gray-50 border-gray-300"
         }`}
       >
