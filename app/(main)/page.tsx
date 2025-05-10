@@ -57,7 +57,7 @@ const App = () => {
       initialContent: "🗒️ New Notepad",
       placeholder: "Notepad...",
       style: { backgroundColor: "#d1fae5" },
-      height: 450,
+      height: 470,
       width: 450,
       component: ({
         content,

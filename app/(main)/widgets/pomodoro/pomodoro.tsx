@@ -67,28 +67,39 @@ const PomodoroEmbedWidget = ({}: PomodoroEmbedWidgetProps) => {
         setTimeLeft((prevTime) => prevTime - 1);
       }, 1000);
     } else if (timeLeft === 0) {
+      console.log("OK");
       // Play notification sound
       const audio = new Audio("/notification.mp3");
       audio.play().catch((e) => console.log("Audio play failed:", e));
 
       // Handle timer completion
       if (mode === "work") {
+        console.log("work1");
+
         const newCompletedPomodoros = completedPomodoros + 1;
         setCompletedPomodoros(newCompletedPomodoros);
 
         // Every 4 pomodoros, take a long break
         if (newCompletedPomodoros % 4 === 0) {
+          console.log("longBreak");
+
           setMode("longBreak");
           if (settings.autoStartBreaks) setIsRunning(true);
           else setIsRunning(false);
         } else {
           setMode("shortBreak");
+          console.log("shortBreak");
+          console.log("settings.autoStartBreaks");
+          console.log(settings.autoStartBreaks);
+          console.log("settings.autoStartBreaks");
+
           if (settings.autoStartBreaks) setIsRunning(true);
           else setIsRunning(false);
         }
       } else {
         // After break, go back to work
         setMode("work");
+        console.log("work2");
         if (settings.autoStartPomodoros) setIsRunning(true);
         else setIsRunning(false);
       }
