@@ -28,6 +28,8 @@ interface WidgetConfig {
     onChange: (content: string) => void;
     placeholder?: string;
   }>;
+  height: number;
+  width: number;
 }
 
 interface DropZoneProps {
@@ -40,14 +42,18 @@ const DropZone = ({ widgetConfigs, onItemsChange }: DropZoneProps) => {
 
   const [{ isOver }, drop] = useDrop({
     accept: widgetConfigs.map((config) => config.type),
-    drop: (item: { id: string }) => {
+    drop: (item: { id: string }, monitor) => {
       const widgetConfig = widgetConfigs.find((config) => {
         return config.id === item.id;
       });
 
-      console.log("widgetConfig");
-      console.log(widgetConfig);
-      console.log("widgetConfig");
+      const clientOffset = monitor.getClientOffset(); // mouse position on screen
+      const dropTarget = document.querySelector(".dropzone") as HTMLElement;
+      const dropRect = dropTarget.getBoundingClientRect();
+
+      const x = (clientOffset?.x || 0) - dropRect.left;
+      const y = (clientOffset?.y || 0) - dropRect.top;
+
       if (!widgetConfig) return;
 
       if (widgetConfig.type === "EMBED") {
@@ -55,17 +61,19 @@ const DropZone = ({ widgetConfigs, onItemsChange }: DropZoneProps) => {
           prompt("Enter a URL to embed:") || ""
         );
       }
+
+      console.log(widgetConfig);
       const newItem: DroppedItem = {
         id: crypto.randomUUID(),
         type: widgetConfig.type,
         content: widgetConfig.initialContent,
-        x: 50 + items.length * 20,
-        y: 50 + items.length * 20,
-        width: 250,
-        height: 150,
+        x,
+        y,
+        width: widgetConfig.width,
+        height: widgetConfig.height,
       };
 
-      console.log(newItem);
+      // console.log(newItem);
       if (newItem.type === "EMBED" && !isValidUrl(newItem.content)) {
         alert("Invalid URL. Please enter a valid link.");
         return;
@@ -167,17 +175,17 @@ const DropZone = ({ widgetConfigs, onItemsChange }: DropZoneProps) => {
               }}
             >
               <Card
-                className="shadow-lg border cursor-move drag-handle w-full h-full flex items-center justify-center relative"
+                className="shadow-lg border cursor-move drag-handle w-full h-full flex items-center justify-center relative group overflow-hidden"
                 style={widgetConfig.style}
               >
-                <button
-                  className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
-                  onClick={() => removeItem(item.id)}
-                >
-                  <X size={16} />
-                </button>
+                <div className="z-50 absolute left-1/2 -translate-x-1/2 -top-[50px] opacity-0 px-10 py-6 group-hover:opacity-100 group-hover:-top-3 backdrop-blur-sm transition-all duration-200 ease-in-out backdrop-grayscale bg-slate-300/50 rounded-bl-full rounded-br-full">
+                  <X
+                    className=" bg-red-500 text-white hover:bg-red-600  cursor-pointer rounded-full absolute bottom-2 left-0 translate-x-[115%] transition-all"
+                    onClick={() => removeItem(item.id)}
+                  />
+                </div>
 
-                <CardContent className="w-full h-full flex items-center justify-center p-4 border-none">
+                <CardContent className="w-full h-full flex items-center justify-center p-0 border-none widget-wrapper">
                   <WidgetComponent
                     content={item.content}
                     onChange={(newContent) =>

@@ -161,11 +161,19 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
   }
 
-  .grid-layout {
+  .drag-handle {
+    @apply !bg-white;
+  }
+
+  .widget-wrapper > div {
+    @apply w-full;
+  }
+
+  /* .grid-layout {
     @apply grid grid-cols-1 md:grid-cols-3 gap-6;
   }
 
   .grid-layout > div {
     @apply !static !transform-none !w-full !h-[300px];
-  }
+  } */
 }

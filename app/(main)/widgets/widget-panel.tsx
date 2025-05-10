@@ -1,7 +1,10 @@
 "use client";
 import DraggableItem from "./draggable-item";
-import { PiNotepadFill, PiTextTBold } from "react-icons/pi";
+import { PiNotepadFill } from "react-icons/pi";
 import { IoLogoYoutube } from "react-icons/io5";
+import { PiTimerFill } from "react-icons/pi";
+import { FaRandom } from "react-icons/fa";
+import { LuListTodo } from "react-icons/lu";
 
 const WidgetPanel = () => {
   return (
@@ -12,19 +15,29 @@ const WidgetPanel = () => {
       }}
     >
       <DraggableItem
-        type="TEXT"
-        id="text-widget"
-        icon={<PiTextTBold className="w-5 h-5 text-blue-500" />}
+        type="LOFI"
+        id="lofi-embed-widget"
+        icon={<FaRandom className="w-5 h-5 text-slate-500" />}
       />
       <DraggableItem
         type="NOTEPAD"
         id="notepad-widget"
-        icon={<PiNotepadFill className="w-5 h-5 text-orange-500" />}
+        icon={<PiNotepadFill className="w-5 h-5 text-slate-500" />}
       />
       <DraggableItem
         type="EMBED"
         id="embed-widget"
-        icon={<IoLogoYoutube className="w-5 h-5 text-red-500" />}
+        icon={<IoLogoYoutube className="w-5 h-5 text-slate-500" />}
+      />
+      <DraggableItem
+        type="POMODORO"
+        id="pomodoro-widget"
+        icon={<PiTimerFill className="w-5 h-5 text-slate-500" />}
+      />
+      <DraggableItem
+        type="TODO"
+        id="todo-widget"
+        icon={<LuListTodo className="w-5 h-5 text-slate-500" />}
       />
     </div>
   );

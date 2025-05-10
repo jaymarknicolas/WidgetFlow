@@ -4,23 +4,20 @@ import DropZone from "@/components/custom/dropzone";
 import WidgetPanel from "./widgets/widget-panel";
 import NotepadWidget from "./widgets/notepad";
 import YoutubeEmbedWidget from "./widgets/youtube-embed";
+import PomodoroEmbedWidget from "./widgets/pomodoro/pomodoro";
+import RandomLofiYoutubeEmbedWidget from "./widgets/random-lofi-videos";
+import TodoApp from "./widgets/todos/todo-app";
 
 const App = () => {
   const widgetConfigs = [
-    // {
-    //   type: "TEXT",
-    //   id: "text-widget",
-    //   initialContent: "📝 New Note",
-    //   placeholder: "Write something...",
-    //   style: { backgroundColor: "#fef3c7" },
-    //   component: TextWidget,
-    // },
     {
       type: "NOTEPAD",
       id: "notepad-widget",
-      initialContent: "🗒️ New Notepad",
-      placeholder: "Notepad...",
+      initialContent: "Type something...",
+      placeholder: "Type something...",
       style: { backgroundColor: "#d1fae5" },
+      height: 300,
+      width: 500,
       component: ({
         content,
         onChange,
@@ -43,6 +40,8 @@ const App = () => {
       initialContent: "🗒️ New Notepad",
       placeholder: "Notepad...",
       style: { backgroundColor: "#d1fae5" },
+      height: 500,
+      width: 500,
       component: ({
         content,
         placeholder,
@@ -51,6 +50,53 @@ const App = () => {
         onChange: (content: string) => void;
         placeholder?: string;
       }) => <YoutubeEmbedWidget content={content} placeholder={placeholder} />,
+    },
+    {
+      type: "POMODORO",
+      id: "pomodoro-widget",
+      initialContent: "🗒️ New Notepad",
+      placeholder: "Notepad...",
+      style: { backgroundColor: "#d1fae5" },
+      height: 450,
+      width: 450,
+      component: ({
+        content,
+        placeholder,
+      }: {
+        content: string;
+        onChange: (content: string) => void;
+        placeholder?: string;
+      }) => <PomodoroEmbedWidget content={content} placeholder={placeholder} />,
+    },
+    {
+      type: "LOFI",
+      id: "lofi-embed-widget",
+      initialContent: "🗒️ New Notepad",
+      placeholder: "Notepad...",
+      style: { backgroundColor: "#d1fae5" },
+      height: 320,
+      width: 450,
+      component: ({
+        placeholder,
+      }: {
+        content: string;
+        onChange: (content: string) => void;
+        placeholder?: string;
+      }) => <RandomLofiYoutubeEmbedWidget placeholder={placeholder} />,
+    },
+    {
+      type: "TODO",
+      id: "todo-widget",
+      initialContent: "🗒️ New Notepad",
+      placeholder: "Notepad...",
+      style: { backgroundColor: "#d1fae5" },
+      height: 320,
+      width: 450,
+      component: ({}: {
+        content: string;
+        onChange: (content: string) => void;
+        placeholder?: string;
+      }) => <TodoApp />,
     },
   ];
 
