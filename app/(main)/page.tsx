@@ -100,8 +100,7 @@ const App = () => {
     },
   ];
 
-  // @ts-expect-error "onItemsChange" is a valid prop
-  const handleItemsChange = (items) => {
+  const handleItemsChange = () => {
     // console.log("Items updated:", items);
   };
 
